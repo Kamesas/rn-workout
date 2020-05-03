@@ -3,8 +3,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { AuthContext } from "./AuthProvider";
 import { Center } from "../components/Center";
 import { ActivityIndicator, AsyncStorage } from "react-native";
-import { AppTabs } from "./AppTabs";
 import { AuthStack } from "./AuthStack";
+import { AppDrawer } from "./AppDrawer";
 
 interface RoutesProps {
   [key: string]: any;
@@ -37,7 +37,7 @@ export const Routes: React.FC<RoutesProps> = () => {
 
   return (
     <NavigationContainer>
-      {user ? <AppTabs /> : <AuthStack />}
+      {user ? <AppDrawer /> : <AuthStack />}
     </NavigationContainer>
   );
 };

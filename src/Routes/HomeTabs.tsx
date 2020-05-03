@@ -2,14 +2,13 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { About } from "../screens/About";
 import { Settings } from "../screens/Settings";
-import { AppParamsList } from "./AppParamList";
+import { HomeParamsList } from "./HomeTabsTypes";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { HomeStack } from "./HomeStack";
-import { SearchStack } from "./SearchStack";
+import { Home } from "../screens/Home";
 
-const Tab = createBottomTabNavigator<AppParamsList>();
+const Tab = createBottomTabNavigator<HomeParamsList>();
 
-export const AppTabs = () => {
+export const HomeTabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -20,7 +19,7 @@ export const AppTabs = () => {
             iconName = "ios-home";
           } else if (route.name === "Settings") {
             iconName = "ios-construct";
-          } else if (route.name === "About") {
+          } else {
             iconName = "ios-help-circle";
           }
 
@@ -33,8 +32,7 @@ export const AppTabs = () => {
         inactiveTintColor: "gray",
       }}
     >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Search" component={SearchStack} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="About" component={About} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>

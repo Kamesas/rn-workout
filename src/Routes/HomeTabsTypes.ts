@@ -1,6 +1,5 @@
-export type AppParamsList = {
+export type HomeParamsList = {
   Home: undefined;
-  Search: undefined;
   About: undefined;
   Settings: undefined;
 };
