@@ -1,11 +1,11 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { About } from "../screens/About";
 import { Settings } from "../screens/Settings";
 import { HomeParamsList } from "./HomeTabsTypes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Home } from "../screens/Home";
 import { BLUE_1, GREY_1 } from "../styles/colors";
+import { LastTrainings } from "../screens/LastTrainings";
 
 const Tab = createBottomTabNavigator<HomeParamsList>();
 
@@ -21,7 +21,7 @@ export const HomeTabs = () => {
           } else if (route.name === "Settings") {
             iconName = "ios-construct";
           } else {
-            iconName = "ios-help-circle";
+            iconName = "md-list-box";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -33,7 +33,7 @@ export const HomeTabs = () => {
       }}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="About" component={About} />
+      <Tab.Screen name="LastTrainings" component={LastTrainings} />
       <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );

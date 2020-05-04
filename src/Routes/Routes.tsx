@@ -6,11 +6,7 @@ import { AppDrawer } from "./AppDrawer";
 import { getUserData } from "../store/actions/authActions";
 import { useDispatch, useSelector } from "react-redux";
 
-interface RoutesProps {
-  [key: string]: any;
-}
-
-export const Routes: React.FC<RoutesProps> = () => {
+export const Routes = () => {
   const userData = useSelector(({ authReducer }: any) => {
     return authReducer.userData;
   });

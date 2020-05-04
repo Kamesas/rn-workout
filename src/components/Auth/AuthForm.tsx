@@ -11,6 +11,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../../store/actions/authActions";
+import { authDataType, authReducerType } from "../../store/types";
 
 interface AuthFormProps {
   navigation: { navigate: (arg: string) => void };
@@ -25,7 +26,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
-  const authResult = useSelector(({ authReducer }: any) => {
+  const authResult = useSelector(({ authReducer }: authReducerType) => {
     return authReducer.result;
   });
 
@@ -55,7 +56,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       return;
     }
 
-    const authData = {
+    const authData: authDataType = {
       email,
       password,
       returnSecureToken: true,
