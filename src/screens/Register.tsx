@@ -1,17 +1,12 @@
 import React from "react";
 import { Center } from "../components/Center";
-import { Text, Button } from "react-native";
 import { AuthNavProps } from "../Routes/AuthParamList";
+import { AuthForm } from "../components/Auth/AuthForm";
 
-export const Register = ({ navigation, route }: AuthNavProps<"Register">) => {
+export const Register = ({ navigation }: AuthNavProps<"Register">) => {
   return (
     <Center>
-      <Text>Register</Text>
-      <Text>{route.name}</Text>
-      <Button
-        title="Go to login"
-        onPress={() => navigation.navigate("Login")}
-      />
+      <AuthForm navigation={navigation} isLogin={false} />
     </Center>
   );
 };

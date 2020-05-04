@@ -1,19 +1,13 @@
-import React, { useContext } from "react";
-import { Text, Button } from "react-native";
+import React from "react";
+import { Button } from "react-native";
 import { Center } from "../components/Center";
 import { AuthNavProps } from "../Routes/AuthParamList";
-import { AuthContext } from "../Routes/AuthProvider";
+import { AuthForm } from "../components/Auth/AuthForm";
 
 export const Login = ({ navigation }: AuthNavProps<"Login">) => {
-  const { login } = useContext(AuthContext);
   return (
     <Center>
-      <Text>Login</Text>
-      <Button title="Log me in" onPress={() => login()} />
-      <Button
-        title="Go to register"
-        onPress={() => navigation.navigate("Register")}
-      />
+      <AuthForm navigation={navigation} isLogin />
     </Center>
   );
 };
