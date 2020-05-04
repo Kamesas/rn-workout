@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import {
   onGetWorkoutData,
@@ -8,10 +8,9 @@ import {
 } from "../store/actions/actionWorkout";
 import dayjs from "dayjs";
 import TrainingList from "../components/TrainingList/TrainingList";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { BLACK_2 } from "../styles/colors";
 import AddForm from "../components/AddForm/AddForm";
 import ExerciseList from "../components/ExerciseList/ExerciseList";
+import { HomeLayout } from "../components/HomeLayout";
 
 interface HomeProps {
   [key: string]: any;
@@ -117,26 +116,24 @@ export const Home: React.FC<HomeProps> = () => {
     });
 
   return (
-    <SafeAreaView>
-      <View style={{ height: "100%", backgroundColor: BLACK_2 }}>
-        <View>
-          <ExerciseList
-            setExercise={setExercise}
-            selectedExercise={selectedExercise}
-          />
-          <AddForm
-            valueAmount={valueAmount}
-            setValueAmount={setValueAmount}
-            valueWeight={valueWeight}
-            setValueWeight={setValueWeight}
-            onPostDate={onPostDate}
-            selectedExercise={selectedExercise}
-          />
-        </View>
-        <View>
-          <TrainingList workoutStore={workoutStore} currDayId={currDayId} />
-        </View>
+    <HomeLayout>
+      <View>
+        <ExerciseList
+          setExercise={setExercise}
+          selectedExercise={selectedExercise}
+        />
+        <AddForm
+          valueAmount={valueAmount}
+          setValueAmount={setValueAmount}
+          valueWeight={valueWeight}
+          setValueWeight={setValueWeight}
+          onPostDate={onPostDate}
+          selectedExercise={selectedExercise}
+        />
       </View>
-    </SafeAreaView>
+      <View>
+        <TrainingList workoutStore={workoutStore} currDayId={currDayId} />
+      </View>
+    </HomeLayout>
   );
 };
