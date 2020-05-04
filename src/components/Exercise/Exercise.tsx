@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { onUpdatetWorkoutData } from "../../store/actions/actionWorkout";
-import { View, Text, Button, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {
-  BLUE_1,
-  RED_1,
-  GREEN_1,
-  BLACK_2,
-  WHITE_1,
-  WHITE_2,
-} from "../../styles/colors";
+import { BLUE_1, RED_1, GREEN_1, WHITE_1, WHITE_2 } from "../../styles/colors";
 
 interface IProps {
   [key: string]: any;

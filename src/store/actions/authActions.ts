@@ -32,7 +32,6 @@ export const auth = (registerBody: any, isLogin: boolean) => {
           registerBody.password
         )
         .then((data) => {
-          console.log(data);
           const userData = {
             name: data.user ? data.user.displayName : null,
             email: data.user ? data.user.email : null,
