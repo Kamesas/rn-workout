@@ -1,6 +1,14 @@
 import React from "react";
-import { Providers } from "./src/Routes/Providers";
+import { Provider } from "react-redux";
+import configureStore from "./src/store/store";
+import { Routes } from "./src/Routes/Routes";
+
+const store = configureStore();
 
 export default function App() {
-  return <Providers />;
+  return (
+    <Provider store={store}>
+      <Routes />
+    </Provider>
+  );
 }

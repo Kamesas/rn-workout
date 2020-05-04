@@ -1,43 +1,37 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthContext } from "./AuthProvider";
-import { Center } from "../components/Center";
-import { ActivityIndicator, AsyncStorage } from "react-native";
+import { AsyncStorage } from "react-native";
 import { AuthStack } from "./AuthStack";
 import { AppDrawer } from "./AppDrawer";
+import { getUserData } from "../store/actions/authActions";
+import { useDispatch, useSelector } from "react-redux";
 
 interface RoutesProps {
   [key: string]: any;
 }
 
 export const Routes: React.FC<RoutesProps> = () => {
-  const { user, login } = useContext(AuthContext);
-  const [loading, setLoading] = useState(true);
+  const userData = useSelector(({ authReducer }: any) => {
+    return authReducer.userData;
+  });
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    AsyncStorage.getItem("user")
-      .then((userString) => {
-        if (userString) {
-          login();
+    AsyncStorage.getItem("WorkoutUserData")
+      .then((userData) => {
+        if (userData) {
+          dispatch(getUserData(JSON.parse(userData)));
         }
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
-
-  if (loading) {
-    return (
-      <Center>
-        <ActivityIndicator size="large" />
-      </Center>
-    );
-  }
+  }, [dispatch]);
 
   return (
     <NavigationContainer>
-      {user ? <AppDrawer /> : <AuthStack />}
+      {userData ? <AppDrawer /> : <AuthStack />}
     </NavigationContainer>
   );
 };

@@ -5,6 +5,7 @@ import { Settings } from "../screens/Settings";
 import { HomeParamsList } from "./HomeTabsTypes";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Home } from "../screens/Home";
+import { BLUE_1, GREY_1 } from "../styles/colors";
 
 const Tab = createBottomTabNavigator<HomeParamsList>();
 
@@ -27,8 +28,8 @@ export const HomeTabs = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: "tomato",
-        inactiveTintColor: "gray",
+        activeTintColor: BLUE_1,
+        inactiveTintColor: GREY_1,
       }}
     >
       <Tab.Screen name="Home" component={Home} />

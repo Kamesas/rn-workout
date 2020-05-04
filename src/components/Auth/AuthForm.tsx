@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   View,
@@ -9,7 +9,8 @@ import {
   Alert,
 } from "react-native";
 
-import { AuthContext } from "../../Routes/AuthProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../store/actions/authActions";
 
 interface AuthFormProps {
   navigation: { navigate: (arg: string) => void };
@@ -20,11 +21,24 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   navigation,
   isLogin = true,
 }) => {
-  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState<string>("");
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
+  const authResult = useSelector(({ authReducer }: any) => {
+    return authReducer.result;
+  });
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authResult === "error" && Alert.alert("Wrong email or password !");
+
+    if (authResult === "success") {
+      setEmail("");
+      setPassword("");
+    }
+  }, [authResult]);
 
   const onSubmit = () => {
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -47,10 +61,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       returnSecureToken: true,
     };
 
-    Alert.alert("Credentials", `${email} + ${password}`);
-    setEmail("");
-    setPassword("");
-    isLogin && login();
+    isLogin ? dispatch(auth(authData, true)) : dispatch(auth(authData, false));
   };
 
   return (
