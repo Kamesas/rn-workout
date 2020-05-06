@@ -26,7 +26,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
-  const authResult = useSelector(({ authReducer }: authReducerType) => {
+  const authResult = useSelector(({ authReducer }: any) => {
     return authReducer.result;
   });
 

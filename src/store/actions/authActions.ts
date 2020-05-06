@@ -1,15 +1,23 @@
-import { AUTH_LOGOUT, GET_USER_DATA, AUTH_RESULT } from "../types";
+import {
+  AUTH_LOGOUT,
+  GET_USER_DATA,
+  AUTH_RESULT,
+  authDataType,
+  userDataType,
+} from "../types";
 import { authRef, fire } from "../../../firebaseConfig";
 import { AsyncStorage } from "react-native";
 
-export const auth = (registerBody: any, isLogin: boolean) => {
+export const auth = (registerBody: authDataType, isLogin: boolean) => {
   if (isLogin) {
-    return async (dispatch: any) => {
+    return async (
+      dispatch: (arg0: { type: string; payload: string | userDataType }) => void
+    ) => {
       fire
         .auth()
         .signInWithEmailAndPassword(registerBody.email, registerBody.password)
         .then((data) => {
-          const userData = {
+          const userData: userDataType = {
             name: data.user ? data.user.displayName : "",
             email: data.user ? data.user.email : "",
           };
@@ -24,7 +32,9 @@ export const auth = (registerBody: any, isLogin: boolean) => {
         });
     };
   } else {
-    return async (dispatch: any) => {
+    return async (
+      dispatch: (arg0: { type: string; payload: string | userDataType }) => void
+    ) => {
       fire
         .auth()
         .createUserWithEmailAndPassword(
@@ -32,7 +42,7 @@ export const auth = (registerBody: any, isLogin: boolean) => {
           registerBody.password
         )
         .then((data) => {
-          const userData = {
+          const userData: userDataType = {
             name: data.user ? data.user.displayName : null,
             email: data.user ? data.user.email : null,
           };
@@ -56,14 +66,16 @@ const authResult = (result: string) => {
   };
 };
 
-export const getUserData = (userData: any) => {
+export const getUserData = (userData: userDataType) => {
   return {
     type: GET_USER_DATA,
     payload: userData,
   };
 };
 
-export const logout = () => (dispatch: any) => {
+export const logout = () => (
+  dispatch: (arg0: { type: string; payload?: string }) => void
+) => {
   authRef
     .signOut()
     .then(() => {

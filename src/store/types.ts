@@ -10,3 +10,20 @@ export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 export const GET_USER_DATA = "GET_USER_DATA";
 export const AUTH_RESULT = "AUTH_RESULT";
+
+export type authDataType = {
+  email: string;
+  password: string;
+  returnSecureToken: boolean;
+};
+
+export type authReducerType = {
+  token: string | null;
+  result: string | null;
+  userData: { name: string | null; email: string | null };
+};
+
+export type userDataType = {
+  name: string | null;
+  email: string | null;
+};

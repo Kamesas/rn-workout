@@ -4,15 +4,20 @@ import {
   AUTH_LOGOUT,
   GET_USER_DATA,
   AUTH_RESULT,
+  authReducerType,
+  userDataType,
 } from "../types";
 
-const initialState: any = {
+const initialState: authReducerType = {
   token: null,
   result: null,
-  userData: null,
+  userData: { name: null, email: null },
 };
 
-export const authReducer = (state = initialState, action: any) => {
+export const authReducer = (
+  state = initialState,
+  action: { type: string; payload: string | userDataType }
+) => {
   switch (action.type) {
     case AUTH:
       return state;
