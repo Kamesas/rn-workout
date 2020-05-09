@@ -74,6 +74,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: BLUE_1,
     marginBottom: 10,
+    color: WHITE_1,
   },
   buttonWrap: {
     height: 44,

@@ -1,7 +1,7 @@
 import React from "react";
 import Exercise from "../Exercise/Exercise";
 import { View, Text } from "react-native";
-import { BLACK_2 } from "../../styles/colors";
+import { BLACK_2, WHITE_1 } from "../../styles/colors";
 
 export interface IProps {
   workoutStore: any;
@@ -9,7 +9,12 @@ export interface IProps {
 }
 
 const TrainingList: React.FC<IProps> = ({ workoutStore, currDayId }) => {
-  if (!currDayId) return <Text>There was no training today</Text>;
+  if (!currDayId)
+    return (
+      <Text style={{ color: WHITE_1, textAlign: "center" }}>
+        There was no training today
+      </Text>
+    );
 
   return (
     <View>

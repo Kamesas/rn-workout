@@ -22,7 +22,7 @@ export const authReducer = (
       return { ...state, userData: action.payload, result: action.payload };
 
     case AUTH_LOGOUT:
-      return { ...state, token: null, userData: null, result: null };
+      return { ...state, userData: null, result: null };
 
     case AUTH_RESULT:
       return { ...state, result: action.payload };
