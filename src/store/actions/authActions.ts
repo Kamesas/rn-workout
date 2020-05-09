@@ -8,6 +8,7 @@ import {
 } from "../types";
 import { authRef, fire } from "../../../firebaseConfig";
 import { AsyncStorage } from "react-native";
+import { onResetState } from "./actionWorkout";
 
 export const auth = (registerBody: authDataType, isLogin: boolean) => {
   if (isLogin) {
@@ -87,6 +88,7 @@ export const logout = () => (dispatch: (arg0: any) => void) => {
     .then(() => {
       AsyncStorage.removeItem("WorkoutUserData");
       dispatch({ type: AUTH_LOGOUT });
+      dispatch(onResetState());
     })
     .catch((error) => {
       dispatch(authResult("logout"));
