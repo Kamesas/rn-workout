@@ -5,11 +5,11 @@ export const DELETE_WORKOUT_ACTION = "DELETE_WORKOUT_ACTION";
 export const CREATE_WORKOUT_ACTION = "CREATE_WORKOUT_ACTION";
 export const RESET_STATE = "RESET_STATE";
 
-export const AUTH = "AUTH";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
-export const GET_USER_DATA = "GET_USER_DATA";
 export const AUTH_RESULT = "AUTH_RESULT";
+export const GET_USER_DATA = "GET_USER_DATA";
+export const LOADING = "LOADING";
 
 export type authDataType = {
   email: string;
@@ -18,9 +18,9 @@ export type authDataType = {
 };
 
 export type authReducerType = {
-  token: string | null;
   result: string | null;
-  userData: { name: string | null; email: string | null };
+  loading: boolean;
+  userData: { name: string | null; email: string } | null;
 };
 
 export type userDataType = {

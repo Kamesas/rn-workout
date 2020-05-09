@@ -4,15 +4,14 @@ import {
   AUTH_RESULT,
   authDataType,
   userDataType,
+  LOADING,
 } from "../types";
 import { authRef, fire } from "../../../firebaseConfig";
 import { AsyncStorage } from "react-native";
 
 export const auth = (registerBody: authDataType, isLogin: boolean) => {
   if (isLogin) {
-    return async (
-      dispatch: (arg0: { type: string; payload: string | userDataType }) => void
-    ) => {
+    return async (dispatch: any) => {
       fire
         .auth()
         .signInWithEmailAndPassword(registerBody.email, registerBody.password)
@@ -25,16 +24,16 @@ export const auth = (registerBody: authDataType, isLogin: boolean) => {
           AsyncStorage.setItem("WorkoutUserData", JSON.stringify(userData));
           dispatch(getUserData(userData));
           dispatch(authResult("success"));
+          dispatch(loading(false));
         })
         .catch((error) => {
           dispatch(authResult("error"));
+          dispatch(loading(false));
           console.log("login err", error);
         });
     };
   } else {
-    return async (
-      dispatch: (arg0: { type: string; payload: string | userDataType }) => void
-    ) => {
+    return async (dispatch: (arg0: any) => void) => {
       fire
         .auth()
         .createUserWithEmailAndPassword(
@@ -50,19 +49,28 @@ export const auth = (registerBody: authDataType, isLogin: boolean) => {
           AsyncStorage.setItem("WorkoutUserData", JSON.stringify(userData));
           dispatch(getUserData(userData));
           dispatch(authResult("success"));
+          dispatch(loading(false));
         })
         .catch(function (error) {
           dispatch(authResult("error"));
+          dispatch(loading(false));
           console.log(error);
         });
     };
   }
 };
 
-const authResult = (result: string) => {
+export const authResult = (result: string | null) => {
   return {
     type: AUTH_RESULT,
     payload: result,
+  };
+};
+
+export const loading = (loading: boolean) => {
+  return {
+    type: LOADING,
+    payload: loading,
   };
 };
 
@@ -73,9 +81,7 @@ export const getUserData = (userData: userDataType) => {
   };
 };
 
-export const logout = () => (
-  dispatch: (arg0: { type: string; payload?: string }) => void
-) => {
+export const logout = () => (dispatch: (arg0: any) => void) => {
   authRef
     .signOut()
     .then(() => {

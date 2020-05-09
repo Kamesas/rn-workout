@@ -10,13 +10,16 @@ import {
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../../store/actions/authActions";
-import { authDataType, authReducerType } from "../../store/types";
+import { auth, loading, authResult } from "../../store/actions/authActions";
+import { authDataType } from "../../store/types";
+import { RED_1, BLACK_2 } from "../../styles/colors";
 
 interface AuthFormProps {
   navigation: { navigate: (arg: string) => void };
   isLogin: boolean;
 }
+
+const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/; // email validation
 
 export const AuthForm: React.FC<AuthFormProps> = ({
   navigation,
@@ -26,35 +29,52 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const [emailErr, setEmailErr] = useState<boolean>(false);
   const [password, setPassword] = useState<string>("");
   const [passwordErr, setPasswordErr] = useState<boolean>(false);
-  const authResult = useSelector(({ authReducer }: any) => {
-    return authReducer.result;
+  const [isFormValid, setFormValid] = useState<boolean>(false);
+  const authState = useSelector(({ authReducer }: any) => {
+    return authReducer;
   });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    authResult === "error" && Alert.alert("Wrong email or password !");
+    authState.result === "error" &&
+      email &&
+      password &&
+      Alert.alert("Wrong email or password !");
 
-    if (authResult === "success") {
+    if (authState.result === "success") {
       setEmail("");
       setPassword("");
     }
-  }, [authResult]);
+  }, [authState.result]);
+
+  useEffect(() => {
+    if (!password || !email) {
+      setFormValid(false);
+      return;
+    }
+
+    if (!reg.test(email) || password.length < 8) {
+      setFormValid(false);
+      return;
+    }
+
+    setFormValid(true);
+  }, [email, password]);
+
+  const onEmailBlur = () => {
+    email.length && !reg.test(email) ? setEmailErr(true) : setEmailErr(false);
+  };
+
+  const onPasswordBLur = () => {
+    password.length && password.length < 8
+      ? setPasswordErr(true)
+      : setPasswordErr(false);
+  };
 
   const onSubmit = () => {
-    const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-
-    reg.test(email) ? setEmailErr(false) : setEmailErr(true);
-    if (reg.test(email) !== true) {
-      alert("wrong email");
-      return;
-    }
-
-    password.length < 8 ? setPasswordErr(true) : setPasswordErr(false);
-    if (password.length < 8) {
-      alert("password must be not less 8 character");
-      return;
-    }
+    dispatch(loading(true));
+    dispatch(authResult(null));
 
     const authData: authDataType = {
       email,
@@ -62,26 +82,44 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       returnSecureToken: true,
     };
 
-    isLogin ? dispatch(auth(authData, true)) : dispatch(auth(authData, false));
+    dispatch(auth(authData, isLogin));
   };
 
   return (
     <View>
-      <TextInput
-        placeholder="email"
-        value={email}
-        onChangeText={(email) => setEmail(email)}
-        style={[styles.input, emailErr ? styles.inputErr : null]}
-      />
-      <TextInput
-        placeholder="passwordrtyer"
-        value={password}
-        onChangeText={(pass) => setPassword(pass)}
-        secureTextEntry={true}
-        style={[styles.input, passwordErr ? styles.inputErr : null]}
-      />
+      <View>
+        <Text style={styles.labelErr}>{emailErr && "Enter correct email"}</Text>
+        <TextInput
+          placeholder="email"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          onBlur={onEmailBlur}
+          onFocus={() => setEmailErr(false)}
+          style={[styles.input, emailErr ? styles.inputErr : null]}
+        />
+      </View>
 
-      <Button title={`${isLogin ? "Sign in" : "Sign up"}`} onPress={onSubmit} />
+      <View>
+        <Text style={styles.labelErr}>
+          {passwordErr && "Password must be not less 8 character"}
+        </Text>
+        <TextInput
+          placeholder="password"
+          value={password}
+          onChangeText={(text) => setPassword(text)}
+          onBlur={onPasswordBLur}
+          onFocus={() => setPasswordErr(false)}
+          secureTextEntry={true}
+          style={[styles.input, passwordErr ? styles.inputErr : null]}
+        />
+      </View>
+      <View style={styles.button}>
+        <Button
+          title={`${isLogin ? "Sign in" : "Sign up"}`}
+          onPress={onSubmit}
+          disabled={!isFormValid || authState.loading}
+        />
+      </View>
 
       {isLogin && (
         <>
@@ -97,18 +135,22 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 
 const styles = StyleSheet.create({
   input: {
-    width: 200,
+    width: 310,
     height: 44,
     padding: 10,
     borderWidth: 1,
-    borderColor: "black",
-    marginBottom: 10,
+    borderColor: BLACK_2,
+    marginBottom: 15,
   },
   inputErr: {
-    borderColor: "red",
+    borderColor: RED_1,
+  },
+  labelErr: {
+    color: RED_1,
+    fontSize: 14,
   },
   button: {
-    marginBottom: 10,
+    marginVertical: 10,
   },
   registerTitle: {
     marginTop: 20,
